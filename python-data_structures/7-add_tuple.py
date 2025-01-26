@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 def add_tuple(tuple_a=(), tuple_b=()):
     # Asegurarse de que ambas tuplas tengan al menos 2 elementos
     # Si falta algún elemento, agregamos 0 como valor predeterminado

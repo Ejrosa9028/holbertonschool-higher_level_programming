@@ -1,11 +1,10 @@
 #!/usr/bin/python3
-
+"""Este módulo define una clase Square."""
 
 
 class Square:
-
-
+    """Representa un cuadrado con un atributo de tamaño privado."""
 
     def __init__(self, size):
-        # Atributo privado para el tamaño del cuadrado
+        """Inicializar un nuevo cuadrado con un tamaño determinado."""
         self.__size = size

@@ -77,17 +77,16 @@ class Rectangle:
         return 2 * (self.__width + self.__height)
 
     def __str__(self):
-        """Devuelve representación del rectángulo usando `print_symbol`."""
+        """Devuelve representación rect usando `print_symbol`."""
         if self.__width == 0 or self.__height == 0:
             return ""
         return "\n".join([str(self.print_symbol) * self.__width] * self.__height)
 
     def __repr__(self):
-        """Devuelve representación y ser usada con eval() y dar el rectángulo."""
+        """Devuelve representación con eval() y dar el rectángulo."""
         return f"Rectangle({self.__width}, {self.__height})"
 
     def __del__(self):
-        """Imprime un mensaje cuando la instancia del rectángulo es eliminada."""
+        """Imprime cuando la instancia del rectángulo es eliminada."""
         print("Bye rectangle...")
         Rectangle.number_of_instances -= 1
-

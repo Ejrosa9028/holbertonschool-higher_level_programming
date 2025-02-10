@@ -11,6 +11,7 @@ Funciones:
     lookup(obj): Devuelve una lista de atributos y métodos de un objeto.
 """
 
+
 def lookup(obj):
     """
     Devuelve una lista de los atributos y métodos disponibles de un objeto.
@@ -19,7 +20,8 @@ def lookup(obj):
         obj: El objeto del que se desean obtener los atributos y métodos.
 
     Returns:
-        list: Una lista de cadenas que representan los atributos y métodos del objeto.
+        list: Una lista de cadenas que representan los atributos y métodos
+              del objeto.
 
     Ejemplo:
         class MyClass:

@@ -15,9 +15,9 @@ def fetch_and_print_posts():
     """
     url = "https://jsonplaceholder.typicode.com/posts"
     response = requests.get(url)
-    
+
     print(f"Status Code: {response.status_code}")
-    
+
     if response.status_code == 200:
         posts = response.json()  # Convierte la respuesta a JSON
         for post in posts:
@@ -30,16 +30,16 @@ def fetch_and_save_posts():
     """
     url = "https://jsonplaceholder.typicode.com/posts"
     response = requests.get(url)
-    
+
     if response.status_code == 200:
         posts = response.json()  # Convierte la respuesta a JSON
-        
+
         # Abre el archivo CSV en modo escritura
         with open("posts.csv", "w", newline="", encoding="utf-8") as file:
             fieldnames = ["id", "title", "body"]  # Encabezados CSV
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()  # Escribir los encabezados
-            
+
             # Escribir cada post en el archivo CSV
             for post in posts:
                 writer.writerow({
@@ -47,5 +47,5 @@ def fetch_and_save_posts():
                     "title": post["title"],
                     "body": post["body"]
                 })
-        
+
         print("Archivo posts.csv creado correctamente.")

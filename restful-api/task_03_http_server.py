@@ -30,8 +30,7 @@ class SimpleAPIHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(HTTPStatus.OK)
             self.send_header("Content-Type", "application/json")
             self.end_headers()
-            # 🔹 Ajustamos el formato de respuesta para coincidir con el test
-            self.wfile.write(json.dumps({"message": "Service is running"}).encode("utf-8"))
+            self.wfile.write(json.dumps({"status": "Ok"}).encode("utf-8"))
 
         elif self.path == "/info":
             self.send_response(HTTPStatus.OK)
@@ -47,8 +46,7 @@ class SimpleAPIHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(HTTPStatus.NOT_FOUND)
             self.send_header("Content-Type", "application/json")
             self.end_headers()
-            # 🔹 Cambiamos el mensaje de error para que coincida con el test
-            error_msg = {"error": "Not found"}
+            error_msg = {"error": "Endpoint not found"}
             self.wfile.write(json.dumps(error_msg).encode("utf-8"))
 
 

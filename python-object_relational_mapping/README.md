@@ -1,0 +1,1 @@
+Este proyecto tarta sobre Python Object relational mapping

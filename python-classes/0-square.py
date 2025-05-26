@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """Módulo que define una clase Square vacía."""
 
 

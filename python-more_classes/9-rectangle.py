@@ -1,0 +1,127 @@
+#!/usr/bin/python3
+"""Este módulo define una clase Rectangle."""
+
+
+class Rectangle:
+    """Representa un rectángulo con ancho y alto."""
+
+    number_of_instances = 0
+    print_symbol = "#"
+
+    def __init__(self, width=0, height=0):
+        """Inicializa un nuevo rectángulo con el ancho y alto dados.
+
+        Args:
+            width (int): El ancho del rectángulo (por defecto es 0).
+            height (int): El alto del rectángulo (por defecto es 0).
+        """
+        self.width = width
+        self.height = height
+        Rectangle.number_of_instances += 1
+
+    @property
+    def width(self):
+        """Obtiene el ancho del rectángulo."""
+        return self.__width
+
+    @width.setter
+    def width(self, value):
+        """Establece el ancho del rectángulo con validación.
+
+        Args:
+            value (int): El nuevo ancho del rectángulo.
+
+        Raises:
+            TypeError: Si el ancho no es un número entero.
+            ValueError: Si el ancho es menor que 0.
+        """
+        if not isinstance(value, int):
+            raise TypeError("width must be an integer")
+        if value < 0:
+            raise ValueError("width must be >= 0")
+        self.__width = value
+
+    @property
+    def height(self):
+        """Obtiene el alto del rectángulo."""
+        return self.__height
+
+    @height.setter
+    def height(self, value):
+        """Establece el alto del rectángulo con validación.
+
+        Args:
+            value (int): El nuevo alto del rectángulo.
+
+        Raises:
+            TypeError: Si el alto no es un número entero.
+            ValueError: Si el alto es menor que 0.
+        """
+        if not isinstance(value, int):
+            raise TypeError("height must be an integer")
+        if value < 0:
+            raise ValueError("height must be >= 0")
+        self.__height = value
+
+    def area(self):
+        """Devuelve el área del rectángulo."""
+        return self.__width * self.__height
+
+    def perimeter(self):
+        """Devuelve el perímetro del rectángulo.
+
+        Si el ancho o el alto es 0, el perímetro será 0.
+        """
+        if self.__width == 0 or self.__height == 0:
+            return 0
+        return 2 * (self.__width + self.__height)
+
+    def __str__(self):
+        """Devuelve una representación rectángulo usando `print_symbol`."""
+        if self.__width == 0 or self.__height == 0:
+            return ""
+        return "\n".join([str(self.print_symbol)*self.__width]*self.__height)
+
+    def __repr__(self):
+        """Devuelve una representación que puede ser usada con eval()."""
+        return f"Rectangle({self.__width}, {self.__height})"
+
+    def __del__(self):
+        """Imprime un mensaje cuando la instancia rectángulo es eliminada."""
+        print("Bye rectangle...")
+        Rectangle.number_of_instances -= 1
+
+    @staticmethod
+    def bigger_or_equal(rect_1, rect_2):
+        """Compara dos rectángulos y devuelve el de mayor área.
+
+        Args:
+            rect_1 (Rectangle): El primer rectángulo a comparar.
+            rect_2 (Rectangle): El segundo rectángulo a comparar.
+
+        Returns:
+            Rectangle: El rectángulo área mayor, o en caso de empate.
+
+        Raises:
+            TypeError: Si cualquiera de objetos instancia de Rectangle.
+        """
+        if not isinstance(rect_1, Rectangle):
+            raise TypeError("rect_1 must be an instance of Rectangle")
+        if not isinstance(rect_2, Rectangle):
+            raise TypeError("rect_2 must be an instance of Rectangle")
+
+        if rect_1.area() >= rect_2.area():
+            return rect_1
+        return rect_2
+
+    @classmethod
+    def square(cls, size=0):
+        """Devuelve nueva instancia Rectangle donde ancho y alto iguales.
+
+        Args:
+            size (int): El tamaño del cuadrado (por defecto es 0).
+
+        Returns:
+            Rectangle: Un nuevo objeto Rectangle donde width == height == size.
+        """
+        return cls(size, size)

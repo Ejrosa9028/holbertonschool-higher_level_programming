@@ -1,0 +1,2 @@
+-- Este comando selecciona la puntuación y el nombre de la segunda tabla donde la puntuación es mayor o igual a 10 y los ordena por puntuación en orden descendente.
+SELECT score, name FROM second_table WHERE score >= 10 ORDER BY score DESC;

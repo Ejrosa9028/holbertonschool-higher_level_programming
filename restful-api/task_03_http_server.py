@@ -1,90 +1,71 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
-Simple HTTP API Server using Python's built-in http.server module.
-
-This module implements a basic API that serves different endpoints:
-- "/"       : Returns a simple text message.
-- "/data"   : Returns JSON data containing sample user information.
-- "/status" : Returns a JSON status message.
-- "/info"   : Returns API metadata.
-
-If a request is made to an undefined endpoint, a 404 response is returned.
+This module defines a simple HTTP server with multiple endpoints.
 """
-
-import http.server
+import http.server as hs
 import json
-from http import HTTPStatus
 
 
-class SimpleAPIHandler(http.server.BaseHTTPRequestHandler):
+PORT = 8000
+
+
+class SimpleHTTPGet(hs.BaseHTTPRequestHandler):
     """
-    Custom request handler for the simple API.
-
-    This class extends BaseHTTPRequestHandler to handle GET requests and
-    return JSON or text responses for different API endpoints.
+    A simple HTTP request handler with GET endpoints.
     """
-
     def do_GET(self):
         """
-        Handles GET requests and routes them to specific API endpoints.
-
-        Supported endpoints:
-        - "/"        : Returns a welcome message.
-        - "/data"    : Returns a JSON object with sample user data.
-        - "/status"  : Returns a JSON response confirming API availability.
-        - "/info"    : Returns API metadata as a JSON response.
-
-        If an unknown endpoint is accessed, it returns a 404 error response.
+        Handles GET requests and routes them to the appropriate handler
+        based on the request path.
         """
         if self.path == "/":
-            self.send_response(HTTPStatus.OK)
-            self.send_header("Content-Type", "text/plain")
-            self.end_headers()
-            self.wfile.write(b"Hello, this is a simple API!")
-
+            self.handle_root()
         elif self.path == "/data":
-            self.send_response(HTTPStatus.OK)
-            self.send_header("Content-Type", "application/json")
-            self.end_headers()
-            data = {"name": "John", "age": 30, "city": "New York"}
-            self.wfile.write(json.dumps(data).encode("utf-8"))
-
+            self.route_data()
         elif self.path == "/status":
-            self.send_response(HTTPStatus.OK)
-            self.send_header("Content-Type", "application/json")
-            self.end_headers()
-            self.wfile.write(json.dumps({"status": "OK"}).encode("utf-8"))
-
-        elif self.path == "/info":
-            self.send_response(HTTPStatus.OK)
-            self.send_header("Content-Type", "application/json")
-            self.end_headers()
-            info = {
-                "version": "1.0",
-                "description": "A simple API built with http.server",
-            }
-            self.wfile.write(json.dumps(info).encode("utf-8"))
-
+            self.status()
         else:
-            self.send_response(HTTPStatus.NOT_FOUND)
-            self.send_header("Content-Type", "application/json")
-            self.end_headers()
-            error_msg = {"error": "Endpoint not found"}  # Fixed key
-            self.wfile.write(json.dumps(error_msg).encode("utf-8"))
+            self.route_404()
 
+    def handle_root(self):
+        """
+        Handles requests to the root endpoint ("/").
+        """
+        self.send_response(200)
+        self.send_header("Content-type", "text")
+        self.end_headers()
+        self.wfile.write(bytes("Hello, this is a simple API!", "utf-8"))
 
-def run():
-    """
-    Starts the HTTP server on port 8000.
+    def route_data(self):
+        """
+        Handles requests to the "/data" endpoint and returns JSON data.
+        """
+        data = {"name": "John", "age": 30, "city": "New York"}
+        self.send_response(200)
+        self.send_header("Content-type", "application/json")
+        self.end_headers()
+        self.wfile.write(bytes(json.dumps(data), "utf-8"))
 
-    The server listens on all available network interfaces and processes
-    incoming HTTP requests using the SimpleAPIHandler.
-    """
-    server_address = ("", 8000)
-    httpd = http.server.HTTPServer(server_address, SimpleAPIHandler)
-    print("Serving on port 8000...")
-    httpd.serve_forever()
+    def status(self):
+        """
+        Handles request to the "/status" endpoint and returns a status message.
+        """
+        self.send_response(200)
+        self.send_header("Content-type", "text")
+        self.end_headers()
+        self.wfile.write(bytes("OK", "utf-8"))
+
+    def route_404(self):
+        """
+        Handles requests to unknown endpoints and returns a 404 error message.
+        """
+        self.send_response(404)
+        self.send_header("Content-type", "text")
+        self.end_headers()
+        self.wfile.write(bytes("Endpoint not found", "utf-8"))
 
 
 if __name__ == "__main__":
-    run()
+    server = hs.HTTPServer(('', PORT), SimpleHTTPGet)
+    print("Server running on {}".format(PORT))
+    server.serve_forever()

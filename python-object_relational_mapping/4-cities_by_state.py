@@ -1,45 +1,44 @@
 #!/usr/bin/python3
 """
-Lists all cities from the database hbtn_0e_4_usa.
-Usage: ./4-cities_by_state.py <mysql username> <mysql password> <database name>
+Script that lists all cities from the database hbtn_0e_4_usa,
+including the state each city belongs to.
 """
 import sys
 import MySQLdb
 
 if __name__ == "__main__":
     # Get MySQL credentials from command-line arguments
-    mysql_user = sys.argv[1]
-    mysql_passwd = sys.argv[2]
-    mysql_db = sys.argv[3]
+    mysql_username = sys.argv[1]
+    mysql_password = sys.argv[2]
+    database_name = sys.argv[3]
 
-    try:
-        # Connect to MySQL server
-        db = MySQLdb.connect(
-            host="localhost",
-            user=mysql_user,
-            passwd=mysql_passwd,
-            db=mysql_db,
-            port=3306
-        )
+    # Connect to the MySQL database
+    db = MySQLdb.connect(
+        host="localhost",
+        port=3306,
+        user=mysql_username,
+        passwd=mysql_password,
+        db=database_name
+    )
 
-        # Create a cursor object
-        cursor = db.cursor()
+    # Create a cursor object to execute queries
+    cursor = db.cursor()
 
-        # SQL query to join cities and states tables
-        query = """SELECT cities.id, cities.name, states.name
-                   FROM cities
-                   JOIN states ON cities.state_id = states.id
-                   ORDER BY cities.id ASC;"""
-        cursor.execute(query)  # Execute the query
+    # SQL query to fetch city id, city name, and corresponding state name
+    query = """
+        SELECT cities.id, cities.name, states.name
+        FROM cities
+        JOIN states ON cities.state_id = states.id
+        ORDER BY cities.id ASC;
+    """
 
-        # Fetch all results and print them
-        rows = cursor.fetchall()
-        for row in rows:
-            print(row)
+    # Execute the query
+    cursor.execute(query)
 
-        # Close cursor and database connection
-        cursor.close()
-        db.close()
+    # Fetch and print all results
+    for row in cursor.fetchall():
+        print(row)
 
-    except MySQLdb.Error as e:
-        print(f"Error connecting to MySQL: {e}")
+    # Close the cursor and connection
+    cursor.close()
+    db.close()
